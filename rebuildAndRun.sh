@@ -4,4 +4,4 @@ cmake -S . -B out/build
 cd out/build
 make
 cd ../..
-./out/build/Cmake data/in.csv data/out.csv
+./out/build/Cmake
