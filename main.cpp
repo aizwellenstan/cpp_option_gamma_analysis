@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
             float strike = std::stof(group[i][19]);
             float pDelta = std::stof(group[i][24]);
 
-            // if (pDelta <= -0.470) continue;
+            if (pDelta <= -0.470) continue;
 
             if (pBid > pAsk) continue;
             for (int j = i + 1; j < group.size(); ++j) {

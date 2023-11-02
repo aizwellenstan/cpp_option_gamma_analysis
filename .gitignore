@@ -46,4 +46,10 @@ _deps
 out
 [Bb][Uu][Ii][Ll][Dd]
 
-data
+data/option
+data/combined.csv
+data/dte.csv
+data/dteAll.csv
+data/dteLts.csv
+data/pythonCombined.csv
+data/pythonCombinedDelta.csv
