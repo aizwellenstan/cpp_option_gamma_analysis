@@ -21,7 +21,10 @@ int main() {
     std::vector<std::string> allFiles = listFilesInDirectory(folderPath);
     std::vector<std::vector<std::string>> ct;  
     read_csv_from_file_list(ct, allFiles);
-    std::map<std::tuple<std::string, int, double>, OptionData> dataMap;  // Use std::tuple as the key type
+
+    // Use a map to store the maximum gamma and corresponding strike for each quote date and DTE
+    std::map<std::tuple<std::string, int>, std::tuple<double, double, double>> maxGammaMap;
+
     for (const auto& v : ct) {
         OptionData optionData;
         optionData.quoteDate = v[2]; // QUOTE_DATE
@@ -30,9 +33,13 @@ int main() {
         optionData.pGamma = std::stod(v[25]); // P_GAMMA
         optionData.strike = std::stod(v[19]); // STRIKE
 
-        // Update the map if a higher value is found
-        auto key = std::make_tuple(optionData.quoteDate, optionData.dte, optionData.strike);
-        dataMap[key] = optionData;
+        auto key = std::make_tuple(optionData.quoteDate, optionData.dte);
+
+        // Check if the current gamma is greater than the stored maximum gamma
+        if (maxGammaMap.find(key) == maxGammaMap.end() ||
+            optionData.cGamma + optionData.pGamma > std::get<0>(maxGammaMap[key]) + std::get<1>(maxGammaMap[key])) {
+            maxGammaMap[key] = std::make_tuple(optionData.cGamma, optionData.pGamma, optionData.strike);
+        }
     }
 
     // Write the highest C_GAMMA + P_GAMMA values and corresponding strike to CSV
@@ -46,11 +53,11 @@ int main() {
     outputFile << "DATE,DTE,C_GAMMA_P_GAMMA,STRIKE\n";
 
     // Write data to CSV
-    for (const auto& entry : dataMap) {
+    for (const auto& entry : maxGammaMap) {
         outputFile << std::get<0>(entry.first) << ","
                    << std::get<1>(entry.first) << ","
-                   << entry.second.cGamma + entry.second.pGamma << ","
-                   << std::get<2>(entry.first) << "\n";
+                   << std::get<0>(entry.second) + std::get<1>(entry.second) << ","
+                   << std::get<2>(entry.second) << "\n";
     }
 
     outputFile.close();
