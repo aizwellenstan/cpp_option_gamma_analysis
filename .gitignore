@@ -53,3 +53,6 @@ data/dteAll.csv
 data/dteLts.csv
 data/pythonCombined.csv
 data/pythonCombinedDelta.csv
+
+DATASOURSE.md
+dteAnalysis.cpp
