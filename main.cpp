@@ -17,7 +17,7 @@ struct OptionData {
 int main() {
     // ... (Existing code remains unchanged)
 
-    std::string folderPath = "data/option/qqq";
+    std::string folderPath = "data/option/spy";
     std::vector<std::string> allFiles = listFilesInDirectory(folderPath);
     std::vector<std::vector<std::string>> ct;  
     read_csv_from_file_list(ct, allFiles);
@@ -43,7 +43,7 @@ int main() {
     }
 
     // Write the highest C_GAMMA + P_GAMMA values and corresponding strike to CSV
-    std::ofstream outputFile("data/gamma.csv");
+    std::ofstream outputFile("data/spy_gamma.csv");
     if (!outputFile.is_open()) {
         std::cerr << "Error opening output file." << std::endl;
         return 1;
