@@ -15,7 +15,6 @@ struct OptionData {
 };
 
 int main() {
-    // ... (Existing code remains unchanged)
 
     std::string folderPath = "data/option/spy";
     std::vector<std::string> allFiles = listFilesInDirectory(folderPath);
@@ -29,9 +28,19 @@ int main() {
         OptionData optionData;
         optionData.quoteDate = v[2]; // QUOTE_DATE
         optionData.dte = std::stoi(v[7]); // DTE
-        optionData.cGamma = std::stod(v[9]); // C_GAMMA
-        optionData.pGamma = std::stod(v[25]); // P_GAMMA
-        optionData.strike = std::stod(v[19]); // STRIKE
+        try {
+            optionData.cGamma = std::stod(v[9]); // C_GAMMA
+            optionData.pGamma = std::stod(v[25]); // P_GAMMA
+            optionData.strike = std::stod(v[19]); // STRIKE
+        }
+        catch (const std::logic_error& e) {
+        // Append file and line information to the caught exception's what() message
+            std::cout << e.what() << " [" << __FILE__ << ":" << __LINE__ << "]" << std::endl;
+            std::cout << v[9] << std::endl;
+            std::cout << v[25] << std::endl;
+            std::cout << v[19] << std::endl;
+            continue;
+        }
 
         auto key = std::make_tuple(optionData.quoteDate, optionData.dte);
 
